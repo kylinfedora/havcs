@@ -15,7 +15,7 @@ LOGGER_NAME = 'jdwhale'
 
 REPORT_WHEN_STARUP = True
 
-def createHandler(hass, entry):
+async def createHandler(hass, entry):
     mode = ['handler']
     if REPORT_WHEN_STARUP:
         mode.append('report_when_starup')
@@ -179,7 +179,7 @@ class VoiceControlJdwhale(PlatformParameter, VoiceControlProcessor):
         }
         return {'errorCode': errorCode, 'message': messsage if messsage else messages[errorCode]}
 
-    async def handleRequest(self, data, auth = False):
+    async def handleRequest(self, data, auth = False, request_from = "http"):
         """Handle request"""
         _LOGGER.info("[%s] Handle Request:\n%s", LOGGER_NAME, data)
 
@@ -193,7 +193,7 @@ class VoiceControlJdwhale(PlatformParameter, VoiceControlProcessor):
 
         if auth:
             if namespace == 'Alpha.Iot.Device.Discover':
-                err_result, discovery_devices, entity_ids = self.process_discovery_command()
+                err_result, discovery_devices, entity_ids = self.process_discovery_command(request_from)
                 content = {'deviceInfo': discovery_devices}
                 if DATA_HAVCS_BIND_MANAGER in self._hass.data[INTEGRATION]:
                     await self._hass.data[INTEGRATION][DATA_HAVCS_BIND_MANAGER].async_save_changed_devices(entity_ids, DOMAIN, p_user_id)
