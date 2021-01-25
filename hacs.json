@@ -1,0 +1,7 @@
+{
+    "name": "智能音箱",
+    "domains": ["sensor"],
+    "render_readme": false,
+    "homeassistant": "0.110",
+    "country": ["CN"]
+  }
